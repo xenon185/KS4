@@ -1,0 +1,188 @@
+/********************************************************************
+	Autor: NPA
+	Datum: 13.12.2016
+	Dateiname: transmit
+	Version: 1.0
+
+	Kurzbeschreibung: Versendet ein einfaches Zeichen über die
+	UART-Schnittstelle TxD PA0
+
+	Änderungen:
+	Version	Name	Datum		Kurzbeschreibung
+	------------------------------------------------------------------
+	1.0		NPA		13.12.2016	1. Programmaufbau
+ *********************************************************************/
+
+/*
+ * Baudrate - Calculation
+ *
+ * BRD = SysClk / (16 * gewuenschte Bitrate)
+ * IBRD = int(BRD)
+ * FBRD = int( (BRD-IBRD * 64 + 0.5)
+ */
+
+/*
+ *	PA0 -> RxD0
+ *	PA1 -> TxD0
+ */
+
+/*
+ * VARIANTE 5:
+ * 9600 bit/s
+ * databits: 7
+ * 1 stop bit
+ * parity even
+ */
+
+#include <stdio.h>
+#include <stdint.h>
+#include "tm4c1294ncpdt.h"
+
+#define BITRATE 9600
+#define SYSCLK 25000000.0
+#define BRD SYSCLK / (16 * BITRATE)
+#define IBRD (int) BRD
+#define FBRD (int) (((BRD-IBRD) * 64) + 0.5 )
+
+#define BITDATA 0x54
+#define WAITLOOPLENGTH 20000
+
+// length data buffer for input data
+#define BUFFERLENGTH 16
+
+void clearBuffer(char buffer[BUFFERLENGTH]);
+void sendData(char data[], int length);
+
+void main(void) {
+
+	uint8_t wt=0;
+	uint32_t i=0;
+
+	/******************************
+	 * CLOCK - Settings
+	 ******************************/
+	// switch over to main quartz oscillator at 25MHz
+	// clear MOSC power down, high oscillator range setting, and no crystal present setting
+	SYSCTL_MOSCCTL_R &= ~(SYSCTL_MOSCCTL_OSCRNG | SYSCTL_MOSCCTL_PWRDN | SYSCTL_MOSCCTL_NOXTAL);
+	// increase the drive strength for MOSC
+	SYSCTL_MOSCCTL_R |= SYSCTL_MOSCCTL_OSCRNG;
+	// set the main oscillator as main clock
+	SYSCTL_RSCLKCFG_R = SYSCTL_RSCLKCFG_OSCSRC_MOSC;
+
+	/******************************
+	 * PORTC - Define
+	 ******************************/
+	SYSCTL_RCGCGPIO_R |= SYSCTL_RCGCGPIO_R2; wt++;
+	GPIO_PORTC_AHB_DEN_R = 0x10;
+	GPIO_PORTC_AHB_DIR_R = 0x00;
+
+	/******************************
+	 * PORTP - Define
+	 ******************************/
+	SYSCTL_RCGCGPIO_R |= SYSCTL_RCGCGPIO_R13; wt++;
+	GPIO_PORTP_DEN_R |= 0x03;
+	GPIO_PORTP_DIR_R |= 0x02;
+	// alternative pin function PA1 -> TxD0
+	GPIO_PORTP_AFSEL_R |= 0x03;
+	// controls the MUX for a pin example PA.1 -> TxD0
+	// each nipple (4-Bit) configure Output Bit
+	GPIO_PORTP_PCTL_R |= 0x00000011;
+
+	/******************************
+	 * UART - Define
+	 ******************************/
+	// enable clock at UART module 0
+	SYSCTL_RCGCUART_R |= SYSCTL_RCGCUART_R6; wt++;
+	// disable UART during initialization
+	UART6_CTL_R &= ~UART_CTL_UARTEN;
+	// configure BAUD rate
+	// set DIVINT of BRD
+	UART6_IBRD_R = IBRD;
+	// set DIVFRAC of BRD
+	UART6_FBRD_R = FBRD;
+	// set Frame-Parameter
+	// WLEN_x = bits
+	// PEN 0 parity disable 1 enable
+	// EPS 0 odd parity 1 even
+	// STP2 0 one stop bit 1 two stop bits
+	UART6_LCRH_R |= (UART_LCRH_WLEN_7 | UART_LCRH_PEN | UART_LCRH_EPS);
+	// after initialization re-enable UART0
+	UART6_CTL_R |= (UART_CTL_UARTEN | UART_CTL_TXE | UART_CTL_RXE); wt++;
+
+
+
+	char c, buffer[BUFFERLENGTH];
+	char messageError[] = "Data overflow!";
+	char cut[] = "\n\r";
+	char echoString[2];
+	uint8_t frameReceived=0;
+	uint8_t echoModus=0;
+
+	i=0;
+	while(1){
+		clearBuffer(buffer);
+		frameReceived = 1;
+		// loop while buffer not full
+		while((i < (BUFFERLENGTH-1)) && (frameReceived)){
+			// wait for flag: WHILE receive FIFO empty
+			while((UART6_FR_R & UART_FR_RXFE));
+			// = till a data frame are received
+			c = UART6_DR_R; // read byte from UART0 data register
+
+			echoModus = (GPIO_PORTC_AHB_DATA_R & 0x10);
+
+			if(echoModus == 0x10){
+				echoString[0] = c;
+				echoString[1] = 0x00;
+				sendData(echoString, sizeof(echoString));
+			}
+
+			// console input for BACKSPACE
+			// 0x08 -> backspace oder 0x7f -> backspace
+			if(c == 0x08){
+				printf("BACKSPACE\n");
+				if(i!=0) {
+					buffer[i-1] = 0x00;
+					i--;
+				}
+				// console input for EOT = Strg+D
+			} else if(c == 0x04) {
+				frameReceived = 0;
+			} else {
+				buffer[i]=c;
+				i++;
+			}
+
+		}
+		// Set 0 (Zero character) at the and of the string
+		buffer[i] = 0x00;
+
+		if(frameReceived) {
+			sendData(cut, sizeof(cut));
+			sendData(messageError, sizeof(messageError));
+		}
+
+		sendData(cut, sizeof(cut));
+		sendData(buffer, sizeof(buffer));
+		sendData(cut, sizeof(cut));
+
+		printf("\n Content of Data Buffer \n%s\n",buffer);
+		i=0;
+	}
+}
+
+void clearBuffer(char buffer[BUFFERLENGTH]) {
+	uint32_t i=0;
+	for(i=0; i<BUFFERLENGTH; i++) {
+		buffer[i] = 0x00;
+	}
+}
+
+void sendData(char data[], int length) {
+	uint32_t i=0;
+	for(i=0; i<length; i++) {
+		UART6_DR_R = data[i];
+		while(!(UART6_FR_R & UART_FR_TXFE));
+	}
+}
+

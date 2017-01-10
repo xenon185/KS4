@@ -1,0 +1,68 @@
+% --------------------------------
+%	LaTeX-File: MPP_Lab2.tex
+% --------------------------------
+%	Autor: 		Nils Parche
+%	Dokument: 	MPP-1 LED-Pendel
+%	Datum:		17.10.2016
+% --------------------------------
+%	Projekt-Name:	MPP-2 LED-Pendel
+%
+%
+% --------------------------------
+
+
+%%%%%% header
+\documentclass[a4paper,10pt]{scrartcl}		%layout (deutsch, A4, Schritgroesse)  ------>(scrartcl/scrreprt)
+
+\usepackage[utf8]{inputenc}					% Erweiterte Schriftzeichen (ä, usw.)
+\usepackage[ngerman]{babel}					% Deutsche Standart bei Dokumenterstellung (Inhaltsverzeichnis)
+\usepackage[T1]{fontenc}					% Normale Schrift
+\usepackage{amsmath}						% Mathefehle
+\usepackage{graphicx}						% Einbinden von Grafiken
+
+\usepackage{cite}							% Quellenangabe
+\usepackage{float}							% Für das große H
+\restylefloat{figure}						% in der figure
+
+% Colors
+\usepackage{color}
+\definecolor{DarkPurple}{rgb}{0.4,0.1,0.4}
+\definecolor{LightLime}{rgb}{0.3,0.5,0.4}
+\definecolor{Blue}{rgb}{0.0,0.0,1.0}
+
+% Quell-Code Darstellung
+\usepackage{listings}
+\usepackage{beramono}						% Text im Codebereich
+\lstdefinestyle{styleNP}
+{
+language=C,
+columns=flexible,
+numbers=left,
+frame=single,
+frameround=tttt,
+showstringspaces=false,						% 
+basicstyle=\footnotesize\ttfamily,			% Schriftgröße verkleiner, weichere Darstellung
+keywordstyle=\bfseries\color{DarkPurple},	% Farbe für while, for, etc.
+commentstyle=\itshape\color{LightLime},		% Farbe für Kommentare
+stringstyle=\color{Blue},					% Farbe für Strings
+captionpos=b                    			% sets the caption-position to bottom
+}
+
+% Header and Footer Stuff
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\fancyfoot[R]{\thepage\ }
+
+\usepackage{multicol}						% Einteilen einer Passage in mehrere Spalten
+\usepackage[hidelinks]{hyperref}			% Rahmen bei Verknüpfungen unsichtbar
+\usepackage{hyperref}						% Einfügen von Hyperlinks / Verknüpfungen
+
+\usepackage[top=1.5in, bottom=1.75in, left=1.25in, right=1.25in]{geometry}
+\usepackage{booktabs}
+
+%%%%%% Dokument
+\title{MPP-2 LED-Pendel}
+\author{Nils Parche}
+\date{\today}

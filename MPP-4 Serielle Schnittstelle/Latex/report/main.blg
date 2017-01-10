@@ -1,0 +1,16 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: main.aux
+A level-1 auxiliary file: titlepage.aux
+The style file: plain.bst
+Database file #1: bibfile.bib
+I was expecting an "="---line 11 of file bibfile.bib
+ :  
+ :  title = {Aufgabe 2: Serielle Schnittstelle,\\ http://www.elearning.haw-hamburg.de/mod/resource/view.php?id=155393},\\
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 19 of file bibfile.bib
+ : 
+ : month = 07,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--empty publisher in Skript_Riemschneider
+(There were 2 error messages)

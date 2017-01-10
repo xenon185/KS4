@@ -1,0 +1,19 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Einleitung}{4}{section.1}
+\contentsline {section}{\numberline {2}Aufgabenteil \ref {Aufgabe 1} Wiederholte Ausgabe eines Zeichens}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}\IeC {\"U}berlegung zur Ausgabe des \IeC {\"u}bertragenen Signales}{6}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Programmalgorithmus f\IeC {\"u}r Variante 1}{7}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Parametereinstellung f\IeC {\"u}r Variante 2 , 3 , 4}{9}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Auflistung der gemessenen Signale}{10}{subsection.2.4}
+\contentsline {subsubsection}{\numberline {2.4.1}Handschriftliche Zeichnung der Signalverl\IeC {\"a}ufe}{14}{subsubsection.2.4.1}
+\contentsline {subsection}{\numberline {2.5}Fazit}{15}{subsection.2.5}
+\contentsline {section}{\numberline {3}Aufgabenteil \ref {Aufgabe 2} Ausgabe einer Zeichenfolge}{15}{section.3}
+\contentsline {subsection}{\numberline {3.1}Beschreibung und L\IeC {\"o}sungsansatz}{15}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Programmalgorithmus}{16}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Struktogramm Aufgabe \ref {Aufgabe 2}}{18}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Fazit}{19}{subsection.3.4}
+\contentsline {section}{\numberline {4}Aufgabenteil \ref {Aufgabe 3} Empfangsprogramm}{20}{section.4}
+\contentsline {subsection}{\numberline {4.1}Beschreibung und L\IeC {\"o}sungsansatz}{20}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Programmalgorithmus}{20}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Struktogram und Programmcode}{21}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Fazit}{24}{subsection.4.4}

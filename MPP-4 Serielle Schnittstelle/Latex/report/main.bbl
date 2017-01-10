@@ -1,0 +1,15 @@
+\begin{thebibliography}{1}
+
+\bibitem{Skript_Riemschneider}
+K.~R. Riemschneider~HAW Hamburg.
+\newblock {\em 07 Foliensatz Serielle Kommunikation UART Handout \\
+  http://www.elearning.haw-hamburg.de/mod/resource/view.php?id=673295}.
+\newblock 2016.
+
+\bibitem{Datenblatt_TM4C1294}
+N.N.
+\newblock {\em Tiva™ TM4C1294NCPDT Microcontroller DATA SHEET}.
+\newblock Texas Instruments Incorporated, ds-tm4c1294ncpdt-15863.2743 spms433b
+  edition, 2014.
+
+\end{thebibliography}
